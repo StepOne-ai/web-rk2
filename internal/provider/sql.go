@@ -91,7 +91,7 @@ func (p *Provider) SelectTaskByAuthorName(author_name string) (*entities.Task, e
 
 func (p *Provider) UpdateTaskByID(id int, user entities.Task) (*entities.Task, error) {
 	var updatedUser entities.Task
-	err := p.conn.QueryRow(`UPDATE "task" SET author_name = $1, assignee_name = $2, created = $3, resolved = $4, status = $5 WHERE id = $6 RETURNING id, author_name, assignee_name, created, resolved`,
+	err := p.conn.QueryRow(`UPDATE "task" SET author_name = $1, assignee_name = $2, created = $3, resolved = $4, status = $5 WHERE id = $6 RETURNING id, author_name, assignee_name, created, resolved, status`,
 		user.Author_name, user.Assignee_name, user.Created, user.Resolved, user.Status, id).
 		Scan(&updatedUser.ID, &updatedUser.Assignee_name, &updatedUser.Author_name, &updatedUser.Created, &updatedUser.Resolved, &updatedUser.Status)
 	if err != nil {
