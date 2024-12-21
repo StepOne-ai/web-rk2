@@ -1,7 +1,10 @@
 package entities
 
-type User struct {
-	ID    int    `json:"id,omitempty"`
-	Name  string `json:"name" validate:"required,min=3,max=30"`
-	Email string `json:"email" validate:"required,email"`
+type Task struct {
+	ID            int    `json:"id,omitempty"`
+	Author_name   string `json:"author_name"`
+	Assignee_name string `json:"Assignee_name"`
+	Created       string `json:"created"`
+	Resolved      string `json:"resolved"`
+	Status        string `json:"status"`
 }

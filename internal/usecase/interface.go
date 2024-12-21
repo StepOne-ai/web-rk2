@@ -1,15 +1,15 @@
 package usecase
 
-import "github.com/ValeryBMSTU/web-rk2/internal/entities"
+import "web-rk2/internal/entities"
 
 type Provider interface {
-	InsertUser(entities.User) (*entities.User, error)
-	SelectAllUsers() ([]*entities.User, error)
+	InsertTask(entities.Task) (*entities.Task, error)
+	SelectAllTasks() ([]*entities.Task, error)
 
-	SelectUserByID(id int) (*entities.User, error)
-	SelectUserByName(name string) (*entities.User, error)
-	SelectUserByEmail(name string) (*entities.User, error)
+	SelectTaskByID(id int) (*entities.Task, error)
+	SelectTaskByAssigneeName(name string) (*entities.Task, error)
+	SelectTaskByAuthorName(author_name string) (*entities.Task, error)
 
-	UpdateUserByID(id int, user entities.User) (*entities.User, error)
-	DeleteUserByID(id int) error
+	UpdateTaskByID(id int, user entities.Task) (*entities.Task, error)
+	DeleteTaskByID(id int) error
 }

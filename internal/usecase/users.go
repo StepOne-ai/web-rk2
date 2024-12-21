@@ -1,21 +1,28 @@
 package usecase
 
-import "github.com/ValeryBMSTU/web-rk2/internal/entities"
+import (
+	"fmt"
+	"web-rk2/internal/entities"
+)
 
-func (u *Usecase) CreateUser(user entities.User) (*entities.User, error) {
-	if user, err := u.p.SelectUserByEmail(user.Email); err != nil {
+func (u *Usecase) CreateTask(user entities.Task) (*entities.Task, error) {
+	if user, err := u.p.SelectTaskByAuthorName(user.Author_name); err != nil {
 		return nil, err
 	} else if user != nil {
 		return nil, entities.ErrUserEmailConflict
 	}
 
-	if user, err := u.p.SelectUserByName(user.Name); err != nil {
+	if user, err := u.p.SelectTaskByAssigneeName(user.Assignee_name); err != nil {
 		return nil, err
 	} else if user != nil {
 		return nil, entities.ErrUserNameConflict
 	}
 
-	createdUser, err := u.p.InsertUser(user)
+	if user.Status != "new" && user.Status != "in progress" && user.Status != "done" {
+		return nil, entities.ErrUserStatusConflict
+	}
+
+	createdUser, err := u.p.InsertTask(user)
 	if err != nil {
 		return nil, err
 	}
@@ -23,8 +30,8 @@ func (u *Usecase) CreateUser(user entities.User) (*entities.User, error) {
 	return createdUser, nil
 }
 
-func (u *Usecase) ListUsers() ([]*entities.User, error) {
-	users, err := u.p.SelectAllUsers()
+func (u *Usecase) ListTasks() ([]*entities.Task, error) {
+	users, err := u.p.SelectAllTasks()
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +39,8 @@ func (u *Usecase) ListUsers() ([]*entities.User, error) {
 	return users, nil
 }
 
-func (u *Usecase) GetUserByID(id int) (*entities.User, error) {
-	user, err := u.p.SelectUserByID(id)
+func (u *Usecase) GetTaskByID(id int) (*entities.Task, error) {
+	user, err := u.p.SelectTaskByID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -45,25 +52,35 @@ func (u *Usecase) GetUserByID(id int) (*entities.User, error) {
 	return user, nil
 }
 
-func (u *Usecase) UpdateUserByID(id int, user entities.User) (*entities.User, error) {
-	oldUser, err := u.p.SelectUserByID(id)
+func (u *Usecase) UpdateTaskByID(id int, user entities.Task) (*entities.Task, error) {
+	oldUser, err := u.p.SelectTaskByID(id)
 	if err != nil {
 		return nil, err
 	}
 
-	if user, err := u.p.SelectUserByEmail(user.Email); err != nil {
+	if user, err := u.p.SelectTaskByAssigneeName(user.Assignee_name); err != nil {
 		return nil, err
 	} else if user != nil && user.ID != oldUser.ID {
 		return nil, entities.ErrUserEmailConflict
 	}
 
-	if user, err := u.p.SelectUserByName(user.Name); err != nil {
+	if user, err := u.p.SelectTaskByAuthorName(user.Author_name); err != nil {
 		return nil, err
 	} else if user != nil && user.ID != oldUser.ID {
 		return nil, entities.ErrUserNameConflict
 	}
+	fmt.Println(oldUser.Status + " " + user.Status)
 
-	updatedUser, err := u.p.UpdateUserByID(id, user)
+	if oldUser.Status != user.Status {
+		if oldUser.Status == "new" && (user.Status != "in progress" && user.Status != "done") {
+			return nil, entities.ErrUserStatusConflict
+		}
+		if oldUser.Status == "in progress" && (user.Status != "done") {
+			return nil, entities.ErrUserStatusConflict
+		}
+	}
+
+	updatedUser, err := u.p.UpdateTaskByID(id, user)
 	if err != nil {
 		return nil, err
 	}
@@ -71,8 +88,8 @@ func (u *Usecase) UpdateUserByID(id int, user entities.User) (*entities.User, er
 	return updatedUser, nil
 }
 
-func (u *Usecase) DeleteUserByID(id int) error {
-	if err := u.p.DeleteUserByID(id); err != nil {
+func (u *Usecase) DeleteTaskByID(id int) error {
+	if err := u.p.DeleteTaskByID(id); err != nil {
 		return err
 	}
 

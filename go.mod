@@ -1,4 +1,4 @@
-module github.com/ValeryBMSTU/web-rk2
+module web-rk2
 
 go 1.22.1
 

@@ -1,11 +1,11 @@
 package api
 
-import "github.com/ValeryBMSTU/web-rk2/internal/entities"
+import "web-rk2/internal/entities"
 
 type Usecase interface {
-	CreateUser(entities.User) (*entities.User, error)
-	ListUsers() ([]*entities.User, error)
-	GetUserByID(id int) (*entities.User, error)
-	UpdateUserByID(id int, user entities.User) (*entities.User, error)
-	DeleteUserByID(id int) error
+	CreateTask(entities.Task) (*entities.Task, error)
+	ListTasks() ([]*entities.Task, error)
+	GetTaskByID(id int) (*entities.Task, error)
+	UpdateTaskByID(id int, user entities.Task) (*entities.Task, error)
+	DeleteTaskByID(id int) error
 }

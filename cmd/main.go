@@ -2,12 +2,13 @@ package main
 
 import (
 	"flag"
-	"github.com/ValeryBMSTU/web-rk2/internal/api"
-	"github.com/ValeryBMSTU/web-rk2/internal/config"
-	"github.com/ValeryBMSTU/web-rk2/internal/provider"
-	"github.com/ValeryBMSTU/web-rk2/internal/usecase"
-	_ "github.com/lib/pq"
 	"log"
+	"web-rk2/internal/api"
+	"web-rk2/internal/config"
+	"web-rk2/internal/provider"
+	"web-rk2/internal/usecase"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
